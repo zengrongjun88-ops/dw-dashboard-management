@@ -1,0 +1,33 @@
+spring:
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dw_dashboard?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+
+  # Redis配置
+  redis:
+    host: localhost
+    port: 6379
+    password:
+    database: 0
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.dw.dashboard: DEBUG
+    com.dw.dashboard.mapper: DEBUG
+
+# Knife4j配置
+knife4j:
+  enable: true
+  production: false
+
+# 应用配置
+app:
+  aes-key: DW_DASHBOARD_KEY
+  sql-timeout: 30
+  max-query-rows: 10000
+  cache-expire: 3600
