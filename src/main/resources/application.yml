@@ -95,6 +95,19 @@ knife4j:
     swagger-model-name: 实体类列表
   production: false
 
+# JWT配置
+jwt:
+  # JWT密钥（建议生产环境使用环境变量）
+  secret: dw-dashboard-secret-key-for-jwt-token-generation-2026
+  # Token有效期（毫秒）24小时
+  expiration: 86400000
+  # Refresh Token有效期（毫秒）7天
+  refresh-expiration: 604800000
+  # Token前缀
+  token-prefix: "Bearer "
+  # Token请求头名称
+  header: Authorization
+
 # 应用配置
 app:
   # AES加密密钥（16位）

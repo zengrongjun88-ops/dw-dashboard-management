@@ -9,8 +9,10 @@ import com.dw.dashboard.entity.User;
 import com.dw.dashboard.exception.BusinessException;
 import com.dw.dashboard.mapper.UserMapper;
 import com.dw.dashboard.service.IUserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -33,10 +38,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BusinessException(ResultCode.DATA_EXISTS, "用户名已存在");
         }
 
-        // 2. 创建用户
+        // 2. 检查邮箱是否已存在
+        if (request.getEmail() != null) {
+            LambdaQueryWrapper<User> emailWrapper = new LambdaQueryWrapper<>();
+            emailWrapper.eq(User::getEmail, request.getEmail());
+            if (count(emailWrapper) > 0) {
+                throw new BusinessException(ResultCode.DATA_EXISTS, "邮箱已被使用");
+            }
+        }
+
+        // 3. 创建用户（密码加密）
         User user = User.builder()
                 .username(request.getUsername())
-                .password(request.getPassword()) // TODO: 密码加密
+                .password(passwordEncoder.encode(request.getPassword()))
                 .realName(request.getRealName())
                 .email(request.getEmail())
                 .phone(request.getPhone())
@@ -44,8 +58,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 .build();
 
         save(user);
+        log.info("创建用户成功: {}", user.getUsername());
 
-        // 3. 返回响应
+        // 4. 返回响应
         UserResponse response = new UserResponse();
         BeanUtils.copyProperties(user, response);
         return response;
@@ -67,6 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         user.setStatus(status);
         updateById(user);
+        log.info("更新用户状态成功: userId={}, status={}", userId, status);
     }
 
 }

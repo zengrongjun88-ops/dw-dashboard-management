@@ -86,7 +86,17 @@ public enum ResultCode {
     /**
      * 加密解密异常
      */
-    ENCRYPT_ERROR(608, "加密解密异常");
+    ENCRYPT_ERROR(608, "加密解密异常"),
+
+    /**
+     * 功能未实现
+     */
+    NOT_IMPLEMENTED(609, "功能未实现"),
+
+    /**
+     * 内部错误
+     */
+    INTERNAL_ERROR(610, "内部错误");
 
     /**
      * 响应码

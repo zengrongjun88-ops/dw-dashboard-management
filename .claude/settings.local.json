@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(xargs ls:*)",
+      "Bash(mvn clean compile:*)",
+      "Skill(commit-push-pr)",
+      "Bash(git add:*)"
+    ]
+  }
+}

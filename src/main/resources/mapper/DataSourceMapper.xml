@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dw.dashboard.mapper.DataSourceMapper">
+
+    <!-- 通用结果映射 -->
+    <resultMap id="BaseResultMap" type="com.dw.dashboard.entity.DataSource">
+        <id column="id" property="id"/>
+        <result column="source_name" property="sourceName"/>
+        <result column="source_type" property="sourceType"/>
+        <result column="host" property="host"/>
+        <result column="port" property="port"/>
+        <result column="database_name" property="databaseName"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="connection_params" property="connectionParams"/>
+        <result column="description" property="description"/>
+        <result column="status" property="status"/>
+        <result column="deleted" property="deleted"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_by" property="updateBy"/>
+    </resultMap>
+
+    <!-- 基础列 -->
+    <sql id="Base_Column_List">
+        id, source_name, source_type, host, port, database_name,
+        username, password, connection_params, description, status,
+        deleted, create_time, update_time, create_by, update_by
+    </sql>
+
+    <!-- 查询启用的数据源列表 -->
+    <select id="selectEnabledDataSources" resultMap="BaseResultMap">
+        SELECT
+            <include refid="Base_Column_List"/>
+        FROM tb_data_source
+        WHERE status = 1
+          AND deleted = 0
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>
