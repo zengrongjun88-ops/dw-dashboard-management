@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DW Dashboard - API测试页面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .test-section {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+        }
+
+        .result.success {
+            background: #f0fff4;
+            border-left-color: #48bb78;
+        }
+
+        .result.error {
+            background: #fff5f5;
+            border-left-color: #f56565;
+        }
+
+        .result pre {
+            margin-top: 10px;
+            padding: 10px;
+            background: #2d3748;
+            color: #e2e8f0;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+
+        .token-display {
+            background: #edf2f7;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-badge.error {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 DW Dashboard API测试工具</h1>
+            <p>后端API接口测试页面 - 无需安装依赖即可测试</p>
+        </div>
+
+        <!-- 登录测试 -->
+        <div class="test-section">
+            <h2>1. 用户登录测试</h2>
+            <div class="form-group">
+                <label>用户名</label>
+                <input type="text" id="username" value="admin" placeholder="输入用户名">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <input type="password" id="password" value="admin123" placeholder="输入密码">
+            </div>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="testLogin()">登录</button>
+                <button class="btn btn-success" onclick="testGetCurrentUser()">获取当前用户</button>
+                <button class="btn btn-danger" onclick="testLogout()">登出</button>
+            </div>
+            <div id="loginResult"></div>
+            <div id="tokenDisplay"></div>
+        </div>
+
+        <!-- 数据源测试 -->
+        <div class="test-section">
+            <h2>2. 数据源管理测试</h2>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="testGetDataSources()">获取数据源列表</button>
+                <button class="btn btn-success" onclick="testCreateDataSource()">创建测试数据源</button>
+            </div>
+            <div id="datasourceResult"></div>
+        </div>
+
+        <!-- 报表测试 -->
+        <div class="test-section">
+            <h2>3. 报表管理测试</h2>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="testGetDashboards()">获取报表列表</button>
+                <button class="btn btn-success" onclick="testCreateDashboard()">创建测试报表</button>
+            </div>
+            <div id="dashboardResult"></div>
+        </div>
+
+        <!-- 用户管理测试 -->
+        <div class="test-section">
+            <h2>4. 用户管理测试</h2>
+            <div class="quick-actions">
+                <button class="btn btn-primary" onclick="testGetUsers()">获取用户列表</button>
+                <button class="btn btn-success" onclick="testGetRoles()">获取角色列表</button>
+            </div>
+            <div id="userResult"></div>
+        </div>
+
+        <!-- 综合测试 -->
+        <div class="test-section">
+            <h2>5. 综合测试</h2>
+            <button class="btn btn-primary" onclick="runAllTests()" style="width: 100%;">运行所有测试</button>
+            <div id="allTestsResult"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8080/api';
+        let token = localStorage.getItem('token') || '';
+
+        // 显示Token
+        function displayToken() {
+            const tokenDisplay = document.getElementById('tokenDisplay');
+            if (token) {
+                tokenDisplay.innerHTML = `
+                    <div class="token-display">
+                        <strong>当前Token:</strong><br>
+                        ${token}
+                    </div>
+                `;
+            } else {
+                tokenDisplay.innerHTML = '';
+            }
+        }
+
+        // 显示结果
+        function showResult(elementId, success, message, data = null) {
+            const element = document.getElementById(elementId);
+            const statusClass = success ? 'success' : 'error';
+            const statusBadge = success ?
+                '<span class="status-badge success">✓ 成功</span>' :
+                '<span class="status-badge error">✗ 失败</span>';
+
+            let html = `
+                <div class="result ${statusClass}">
+                    ${statusBadge}
+                    <p><strong>${message}</strong></p>
+            `;
+
+            if (data) {
+                html += `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            }
+
+            html += '</div>';
+            element.innerHTML = html;
+        }
+
+        // 发送请求
+        async function request(url, options = {}) {
+            const headers = {
+                'Content-Type': 'application/json',
+                ...options.headers
+            };
+
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
+            try {
+                const response = await fetch(API_BASE_URL + url, {
+                    ...options,
+                    headers
+                });
+
+                const data = await response.json();
+
+                if (response.ok && (data.code === 200 || data.success)) {
+                    return { success: true, data: data.data || data };
+                } else {
+                    return { success: false, message: data.message || '请求失败', data };
+                }
+            } catch (error) {
+                return { success: false, message: error.message, data: null };
+            }
+        }
+
+        // 1. 登录测试
+        async function testLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const result = await request('/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ username, password })
+            });
+
+            if (result.success) {
+                token = result.data.token;
+                localStorage.setItem('token', token);
+                displayToken();
+                showResult('loginResult', true, '登录成功！', result.data);
+            } else {
+                showResult('loginResult', false, result.message, result.data);
+            }
+        }
+
+        // 获取当前用户
+        async function testGetCurrentUser() {
+            if (!token) {
+                showResult('loginResult', false, '请先登录！');
+                return;
+            }
+
+            const result = await request('/auth/current');
+            showResult('loginResult', result.success,
+                result.success ? '获取用户信息成功' : result.message,
+                result.data);
+        }
+
+        // 登出
+        async function testLogout() {
+            const result = await request('/auth/logout', { method: 'POST' });
+            token = '';
+            localStorage.removeItem('token');
+            displayToken();
+            showResult('loginResult', true, '已登出');
+        }
+
+        // 2. 获取数据源列表
+        async function testGetDataSources() {
+            if (!token) {
+                showResult('datasourceResult', false, '请先登录！');
+                return;
+            }
+
+            const result = await request('/datasource/list');
+            showResult('datasourceResult', result.success,
+                result.success ? '获取数据源列表成功' : result.message,
+                result.data);
+        }
+
+        // 创建测试数据源
+        async function testCreateDataSource() {
+            if (!token) {
+                showResult('datasourceResult', false, '请先登录！');
+                return;
+            }
+
+            const testData = {
+                sourceName: '测试数据源_' + Date.now(),
+                sourceType: 'MYSQL',
+                host: 'localhost',
+                port: 3306,
+                databaseName: 'test_db',
+                username: 'root',
+                password: 'password',
+                description: 'API测试创建的数据源'
+            };
+
+            const result = await request('/datasource/create', {
+                method: 'POST',
+                body: JSON.stringify(testData)
+            });
+
+            showResult('datasourceResult', result.success,
+                result.success ? '创建数据源成功' : result.message,
+                result.data);
+        }
+
+        // 3. 获取报表列表
+        async function testGetDashboards() {
+            if (!token) {
+                showResult('dashboardResult', false, '请先登录！');
+                return;
+            }
+
+            const result = await request('/dashboard/list');
+            showResult('dashboardResult', result.success,
+                result.success ? '获取报表列表成功' : result.message,
+                result.data);
+        }
+
+        // 创建测试报表
+        async function testCreateDashboard() {
+            if (!token) {
+                showResult('dashboardResult', false, '请先登录！');
+                return;
+            }
+
+            const testData = {
+                dashboardName: '测试报表_' + Date.now(),
+                dashboardCode: 'TEST_' + Date.now(),
+                category: '测试分类',
+                description: 'API测试创建的报表'
+            };
+
+            const result = await request('/dashboard/create', {
+                method: 'POST',
+                body: JSON.stringify(testData)
+            });
+
+            showResult('dashboardResult', result.success,
+                result.success ? '创建报表成功' : result.message,
+                result.data);
+        }
+
+        // 4. 获取用户列表
+        async function testGetUsers() {
+            if (!token) {
+                showResult('userResult', false, '请先登录！');
+                return;
+            }
+
+            const result = await request('/user/list');
+            showResult('userResult', result.success,
+                result.success ? '获取用户列表成功' : result.message,
+                result.data);
+        }
+
+        // 获取角色列表
+        async function testGetRoles() {
+            if (!token) {
+                showResult('userResult', false, '请先登录！');
+                return;
+            }
+
+            const result = await request('/role/list');
+            showResult('userResult', result.success,
+                result.success ? '获取角色列表成功' : result.message,
+                result.data);
+        }
+
+        // 5. 运行所有测试
+        async function runAllTests() {
+            const resultDiv = document.getElementById('allTestsResult');
+            resultDiv.innerHTML = '<div class="result"><p>正在运行测试...</p></div>';
+
+            const tests = [
+                { name: '登录测试', fn: testLogin },
+                { name: '获取数据源列表', fn: testGetDataSources },
+                { name: '获取报表列表', fn: testGetDashboards },
+                { name: '获取用户列表', fn: testGetUsers },
+                { name: '获取角色列表', fn: testGetRoles }
+            ];
+
+            let results = [];
+            for (const test of tests) {
+                try {
+                    await test.fn();
+                    results.push({ name: test.name, success: true });
+                } catch (error) {
+                    results.push({ name: test.name, success: false, error: error.message });
+                }
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            const successCount = results.filter(r => r.success).length;
+            const totalCount = results.length;
+
+            let html = `
+                <div class="result ${successCount === totalCount ? 'success' : 'error'}">
+                    <h3>测试完成: ${successCount}/${totalCount} 通过</h3>
+                    <ul style="margin-top: 10px;">
+            `;
+
+            results.forEach(r => {
+                const icon = r.success ? '✓' : '✗';
+                const color = r.success ? '#48bb78' : '#f56565';
+                html += `<li style="color: ${color}; margin: 5px 0;">${icon} ${r.name}</li>`;
+            });
+
+            html += '</ul></div>';
+            resultDiv.innerHTML = html;
+        }
+
+        // 页面加载时显示Token
+        displayToken();
+    </script>
+</body>
+</html>
