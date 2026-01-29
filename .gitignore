@@ -89,3 +89,4 @@ application-local.properties
 # virtual machine crash logs
 hs_err_pid*
 replay_pid*
+.claude/settings.local.json
