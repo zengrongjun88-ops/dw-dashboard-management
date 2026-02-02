@@ -73,17 +73,12 @@ server:
     max-threads: 200
     min-spare-threads: 10
 
-# 日志配置
+# 日志配置（详细配置见logback-spring.xml）
 logging:
   level:
     root: INFO
     com.dw.dashboard: DEBUG
     com.dw.dashboard.mapper: DEBUG
-  file:
-    name: logs/dw-dashboard.log
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n"
 
 # Knife4j配置
 knife4j:

@@ -5,6 +5,11 @@
     <!-- 日志输出格式 -->
     <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n" />
 
+    <!-- 日志文件最大大小 -->
+    <property name="log.maxFileSize" value="100MB" />
+    <!-- 日志文件总大小上限 -->
+    <property name="log.totalSizeCap" value="10GB" />
+
     <!-- 控制台输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -16,12 +21,16 @@
     <!-- 系统日志输出 -->
     <appender name="file_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/dw-dashboard-info.log</file>
-        <!-- 循环政策：基于时间创建日志文件 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 循环政策：基于时间和大小创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/dw-dashboard-info.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/dw-dashboard-info.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
+            <!-- 单个日志文件最大大小 -->
+            <maxFileSize>${log.maxFileSize}</maxFileSize>
+            <!-- 所有日志文件总大小上限 -->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
@@ -40,12 +49,16 @@
     <!-- 错误日志输出 -->
     <appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/dw-dashboard-error.log</file>
-        <!-- 循环政策：基于时间创建日志文件 -->
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 循环政策：基于时间和大小创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- 日志文件名格式 -->
-            <fileNamePattern>${log.path}/dw-dashboard-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${log.path}/dw-dashboard-error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 日志最大的历史 60天 -->
             <maxHistory>60</maxHistory>
+            <!-- 单个日志文件最大大小 -->
+            <maxFileSize>${log.maxFileSize}</maxFileSize>
+            <!-- 所有日志文件总大小上限 -->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
@@ -64,9 +77,16 @@
     <!-- SQL日志输出 -->
     <appender name="file_sql" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/dw-dashboard-sql.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${log.path}/dw-dashboard-sql.%d{yyyy-MM-dd}.log</fileNamePattern>
+        <!-- 循环政策：基于时间和大小创建日志文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件名格式 -->
+            <fileNamePattern>${log.path}/dw-dashboard-sql.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 日志最大的历史 30天 -->
             <maxHistory>30</maxHistory>
+            <!-- 单个日志文件最大大小 -->
+            <maxFileSize>${log.maxFileSize}</maxFileSize>
+            <!-- 所有日志文件总大小上限 -->
+            <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${log.pattern}</pattern>
