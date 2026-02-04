@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DW Dashboard Management - 功能验证页面</title>
+    
+    <!-- Ant Design CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@5.12.0/dist/reset.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #1890ff;
+            margin-bottom: 10px;
+        }
+        
+        .header .info {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 10px;
+        }
+        
+        .header .info h3 {
+            color: #0050b3;
+            margin-bottom: 8px;
+        }
+        
+        .header .info p {
+            margin: 4px 0;
+            color: #595959;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 400px;
+        }
+        
+        .login-box h2 {
+            text-align: center;
+            color: #1890ff;
+            margin-bottom: 30px;
+        }
+        
+        .main-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #595959;
+            font-size: 14px;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+        }
+        
+        .tab:hover {
+            color: #1890ff;
+        }
+        
+        .tab.active {
+            color: #1890ff;
+            border-bottom-color: #1890ff;
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 8px;
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        .btn-primary {
+            background: #1890ff;
+            color: white;
+            border-color: #1890ff;
+        }
+        
+        .btn-primary:hover {
+            background: #40a9ff;
+            border-color: #40a9ff;
+        }
+        
+        .btn-danger {
+            background: #ff4d4f;
+            color: white;
+            border-color: #ff4d4f;
+        }
+        
+        .btn-danger:hover {
+            background: #ff7875;
+            border-color: #ff7875;
+        }
+        
+        .btn-success {
+            background: #52c41a;
+            color: white;
+            border-color: #52c41a;
+        }
+        
+        .btn-success:hover {
+            background: #73d13d;
+            border-color: #73d13d;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        
+        table th,
+        table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        table th {
+            background: #fafafa;
+            font-weight: 500;
+            color: #262626;
+        }
+        
+        table tr:hover {
+            background: #fafafa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .badge-success {
+            background: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+        
+        .badge-warning {
+            background: #fffbe6;
+            color: #faad14;
+            border: 1px solid #ffe58f;
+        }
+        
+        .badge-danger {
+            background: #fff2f0;
+            color: #ff4d4f;
+            border: 1px solid #ffccc7;
+        }
+        
+        .badge-info {
+            background: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #262626;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #8c8c8c;
+        }
+        
+        .modal-close:hover {
+            color: #262626;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #262626;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 24px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 20px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8c8c8c;
+        }
+        
+        .message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 2000;
+            display: none;
+        }
+        
+        .message.active {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateX(-50%) translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .message-success {
+            background: #f6ffed;
+            color: #52c41a;
+            border: 1px solid #b7eb8f;
+        }
+        
+        .message-error {
+            background: #fff2f0;
+            color: #ff4d4f;
+            border: 1px solid #ffccc7;
+        }
+        
+        .message-info {
+            background: #e6f7ff;
+            color: #1890ff;
+            border: 1px solid #91d5ff;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            padding: 6px 12px;
+            border: 1px solid #d9d9d9;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        .pagination button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .pagination span {
+            color: #595959;
+        }
+        
+        .detail-card {
+            background: #fafafa;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 16px;
+        }
+        
+        .detail-card h4 {
+            margin-bottom: 12px;
+            color: #262626;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 8px;
+        }
+        
+        .detail-label {
+            width: 120px;
+            color: #8c8c8c;
+        }
+        
+        .detail-value {
+            flex: 1;
+            color: #262626;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 22px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #1890ff;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 DW Dashboard Management - 功能验证页面</h1>
+        <div class="info">
+            <h3>📝 测试账号</h3>
+            <p><strong>管理员：</strong> admin / 123456</p>
+            <p><strong>分析师：</strong> analyst / 123456</p>
+            <p><strong>查看者：</strong> viewer / 123456</p>
+            <p style="margin-top: 8px; color: #ff4d4f;"><strong>💡 提示：</strong>本页面使用Mock数据，所有操作仅在浏览器内存中生效，刷新页面后数据会重置。</p>
+        </div>
+    </div>
+
+    <div id="app"></div>
+    
+    <div id="message" class="message"></div>
+
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    
+    <script>
+        // ==================== Mock数据 ====================
+        const mockData = {
+            users: [
+                { id: 1, username: 'admin', password: '123456', realName: '系统管理员', email: 'admin@example.com', phone: '13800138000', status: 1, roleIds: [1], roleNames: ['管理员'], createdAt: '2026-01-01 10:00:00' },
+                { id: 2, username: 'analyst', password: '123456', realName: '数据分析师', email: 'analyst@example.com', phone: '13800138001', status: 1, roleIds: [2], roleNames: ['分析师'], createdAt: '2026-01-02 10:00:00' },
+                { id: 3, username: 'viewer', password: '123456', realName: '报表查看者', email: 'viewer@example.com', phone: '13800138002', status: 1, roleIds: [3], roleNames: ['查看者'], createdAt: '2026-01-03 10:00:00' }
+            ],
+            roles: [
+                { id: 1, roleName: '管理员', roleCode: 'ADMIN', description: '系统管理员，拥有所有权限', status: 1, createdAt: '2026-01-01 10:00:00' },
+                { id: 2, roleName: '分析师', roleCode: 'ANALYST', description: '数据分析师，可以创建和编辑报表', status: 1, createdAt: '2026-01-01 10:00:00' },
+                { id: 3, roleName: '查看者', roleCode: 'VIEWER', description: '报表查看者，只能查看报表', status: 1, createdAt: '2026-01-01 10:00:00' }
+            ],
+            dataSources: [
+                { id: 1, name: 'MySQL测试库', type: 'mysql', host: 'localhost', port: 3306, database: 'test_db', username: 'root', password: '******', status: 1, createdAt: '2026-01-01 10:00:00' },
+                { id: 2, name: 'PostgreSQL生产库', type: 'postgresql', host: '192.168.1.100', port: 5432, database: 'prod_db', username: 'postgres', password: '******', status: 1, createdAt: '2026-01-02 10:00:00' },
+                { id: 3, name: 'ClickHouse数据仓库', type: 'clickhouse', host: '192.168.1.200', port: 8123, database: 'dw', username: 'default', password: '******', status: 1, createdAt: '2026-01-03 10:00:00' }
+            ],
+            dashboards: [
+                { id: 1, name: '销售数据报表', description: '展示每日销售数据趋势', category: '销售分析', status: 'published', isPublic: true, datasourceId: 1, datasourceName: 'MySQL测试库', createdBy: 'admin', createdAt: '2026-01-10 10:00:00', chartType: 'line' },
+                { id: 2, name: '用户分析报表', description: '用户注册和活跃度分析', category: '用户分析', status: 'published', isPublic: true, datasourceId: 1, datasourceName: 'MySQL测试库', createdBy: 'analyst', createdAt: '2026-01-11 10:00:00', chartType: 'pie' },
+                { id: 3, name: '订单统计报表', description: '订单状态统计', category: '订单分析', status: 'draft', isPublic: false, datasourceId: 2, datasourceName: 'PostgreSQL生产库', createdBy: 'analyst', createdAt: '2026-01-12 10:00:00', chartType: 'bar' }
+            ],
+            permissions: [
+                { id: 1, dashboardId: 1, dashboardName: '销售数据报表', targetType: 'user', targetId: 2, targetName: 'analyst', permissionLevel: 'edit', createdAt: '2026-01-10 10:00:00' },
+                { id: 2, dashboardId: 1, dashboardName: '销售数据报表', targetType: 'role', targetId: 3, targetName: '查看者', permissionLevel: 'view', createdAt: '2026-01-10 10:00:00' },
+                { id: 3, dashboardId: 2, dashboardName: '用户分析报表', targetType: 'user', targetId: 3, targetName: 'viewer', permissionLevel: 'view', createdAt: '2026-01-11 10:00:00' }
+            ],
+            queryResults: {
+                1: {
+                    columns: ['date', 'sales_amount', 'order_count'],
+                    data: [
+                        { date: '2026-01-01', sales_amount: 12500, order_count: 45 },
+                        { date: '2026-01-02', sales_amount: 15800, order_count: 52 },
+                        { date: '2026-01-03', sales_amount: 13200, order_count: 48 },
+                        { date: '2026-01-04', sales_amount: 16500, order_count: 58 },
+                        { date: '2026-01-05', sales_amount: 14300, order_count: 51 },
+                        { date: '2026-01-06', sales_amount: 18900, order_count: 65 },
+                        { date: '2026-01-07', sales_amount: 17600, order_count: 62 }
+                    ]
+                },
+                2: {
+                    columns: ['user_type', 'count'],
+                    data: [
+                        { user_type: '普通用户', count: 1250 },
+                        { user_type: 'VIP用户', count: 380 },
+                        { user_type: '企业用户', count: 125 }
+                    ]
+                },
+                3: {
+                    columns: ['status', 'count', 'total_amount'],
+                    data: [
+                        { status: '待支付', count: 156, total_amount: 45600 },
+                        { status: '已支付', count: 892, total_amount: 256800 },
+                        { status: '已发货', count: 745, total_amount: 198500 },
+                        { status: '已完成', count: 1523, total_amount: 456700 },
+                        { status: '已取消', count: 89, total_amount: 23400 }
+                    ]
+                }
+            }
+        };
+
+        // ==================== 工具函数 ====================
+        function showMessage(text, type = 'success') {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message message-${type} active`;
+            setTimeout(() => {
+                msg.className = 'message';
+            }, 3000);
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            return dateStr.split(' ')[0];
+        }
+
+        function getStatusBadge(status) {
+            const statusMap = {
+                'draft': { text: '草稿', class: 'badge-warning' },
+                'published': { text: '已发布', class: 'badge-success' },
+                'offline': { text: '已下线', class: 'badge-danger' },
+                '1': { text: '启用', class: 'badge-success' },
+                '0': { text: '禁用', class: 'badge-danger' }
+            };
+            const info = statusMap[status] || { text: status, class: 'badge-info' };
+            return `<span class="badge ${info.class}">${info.text}</span>`;
+        }
+
+        function getPermissionLevelText(level) {
+            const map = { 'view': '查看', 'edit': '编辑', 'manage': '管理' };
+            return map[level] || level;
+        }
+
+        function getDataSourceTypeText(type) {
+            const map = {
+                'mysql': 'MySQL',
+                'postgresql': 'PostgreSQL',
+                'oracle': 'Oracle',
+                'sqlserver': 'SQL Server',
+                'clickhouse': 'ClickHouse'
+            };
+            return map[type] || type;
+        }
+
+        // ==================== 应用状态 ====================
+        const state = {
+            currentUser: null,
+            currentTab: 'datasource',
+            data: JSON.parse(JSON.stringify(mockData)) // 深拷贝
+        };
+
+        // ==================== 渲染函数 ====================
+        function renderApp() {
+            const app = document.getElementById('app');
+            
+            if (!state.currentUser) {
+                app.innerHTML = renderLogin();
+            } else {
+                app.innerHTML = renderMain();
+                attachEventListeners();
+            }
+        }
+
+        function renderLogin() {
+            return `
+                <div class="login-container">
+                    <div class="login-box">
+                        <h2>🔐 用户登录</h2>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label>用户名</label>
+                                <input type="text" id="username" placeholder="请输入用户名" required>
+                            </div>
+                            <div class="form-group">
+                                <label>密码</label>
+                                <input type="password" id="password" placeholder="请输入密码" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">登录</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderMain() {
+            return `
+                <div class="container">
+                    <div class="main-content">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                            <h2>欢迎，${state.currentUser.realName}</h2>
+                            <button class="btn btn-danger" onclick="logout()">退出登录</button>
+                        </div>
+                        
+                        <div class="tabs">
+                            <button class="tab ${state.currentTab === 'datasource' ? 'active' : ''}" onclick="switchTab('datasource')">数据源管理</button>
+                            <button class="tab ${state.currentTab === 'dashboard' ? 'active' : ''}" onclick="switchTab('dashboard')">报表管理</button>
+                            <button class="tab ${state.currentTab === 'designer' ? 'active' : ''}" onclick="switchTab('designer')">报表设计器</button>
+                            <button class="tab ${state.currentTab === 'view' ? 'active' : ''}" onclick="switchTab('view')">报表查看</button>
+                            <button class="tab ${state.currentTab === 'user' ? 'active' : ''}" onclick="switchTab('user')">用户管理</button>
+                            <button class="tab ${state.currentTab === 'role' ? 'active' : ''}" onclick="switchTab('role')">角色管理</button>
+                            <button class="tab ${state.currentTab === 'permission' ? 'active' : ''}" onclick="switchTab('permission')">权限管理</button>
+                        </div>
+                        
+                        <div id="tabContent"></div>
+                    </div>
+                </div>
+            `;
+        }
+        function renderDataSourceList() {
+            const list = state.data.dataSources;
+            let html = '<div><div class="toolbar"><div class="search-box">';
+            html += '<input type="text" id="searchDataSource" placeholder="搜索数据源名称">';
+            html += '<button class="btn" onclick="searchDataSource()">搜索</button></div>';
+            html += '<button class="btn btn-primary" onclick="showDataSourceModal()">新建数据源</button></div>';
+            html += '<table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>主机</th><th>端口</th><th>数据库</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            
+            list.forEach(ds => {
+                html += '<tr>';
+                html += '<td>' + ds.id + '</td>';
+                html += '<td>' + ds.name + '</td>';
+                html += '<td>' + getDataSourceTypeText(ds.type) + '</td>';
+                html += '<td>' + ds.host + '</td>';
+                html += '<td>' + ds.port + '</td>';
+                html += '<td>' + ds.database + '</td>';
+                html += '<td>' + getStatusBadge(ds.status) + '</td>';
+                html += '<td>' + formatDate(ds.createdAt) + '</td>';
+                html += '<td>';
+                html += '<button class="btn" onclick="testConnection(' + ds.id + ')">测试连接</button> ';
+                html += '<button class="btn" onclick="editDataSource(' + ds.id + ')">编辑</button> ';
+                html += '<button class="btn btn-danger" onclick="deleteDataSource(' + ds.id + ')">删除</button>';
+                html += '</td></tr>';
+            });
+            
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderDashboardList() {
+            const list = state.data.dashboards;
+            let html = '<div><div class="toolbar"><div class="search-box">';
+            html += '<input type="text" id="searchDashboard" placeholder="搜索报表名称">';
+            html += '<select id="statusFilter" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">';
+            html += '<option value="">全部状态</option><option value="draft">草稿</option>';
+            html += '<option value="published">已发布</option><option value="offline">已下线</option></select>';
+            html += '<button class="btn" onclick="searchDashboard()">搜索</button></div></div>';
+            html += '<table><thead><tr><th>ID</th><th>报表名称</th><th>描述</th><th>分类</th><th>状态</th><th>创建人</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            
+            list.forEach(d => {
+                html += '<tr>';
+                html += '<td>' + d.id + '</td>';
+                html += '<td>' + d.name + '</td>';
+                html += '<td>' + d.description + '</td>';
+                html += '<td>' + d.category + '</td>';
+                html += '<td>' + getStatusBadge(d.status) + '</td>';
+                html += '<td>' + d.createdBy + '</td>';
+                html += '<td>' + formatDate(d.createdAt) + '</td>';
+                html += '<td>';
+                html += '<button class="btn" onclick="viewDashboard(' + d.id + ')">查看</button> ';
+                if (d.status === 'draft') {
+                    html += '<button class="btn btn-success" onclick="publishDashboard(' + d.id + ')">发布</button> ';
+                }
+                if (d.status === 'published') {
+                    html += '<button class="btn btn-warning" onclick="offlineDashboard(' + d.id + ')">下线</button> ';
+                }
+                html += '<button class="btn btn-danger" onclick="deleteDashboard(' + d.id + ')">删除</button>';
+                html += '</td></tr>';
+            });
+            
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderDesigner() {
+            let html = '<div><h3>报表设计器</h3><form id="designerForm">';
+            html += '<div class="form-group"><label>报表名称 *</label>';
+            html += '<input type="text" id="dashboardName" placeholder="请输入报表名称" required></div>';
+            html += '<div class="form-group"><label>描述</label>';
+            html += '<textarea id="dashboardDesc" placeholder="请输入报表描述"></textarea></div>';
+            html += '<div class="form-group"><label>分类 *</label>';
+            html += '<input type="text" id="dashboardCategory" placeholder="请输入分类" required></div>';
+            html += '<div class="form-group"><label>数据源 *</label>';
+            html += '<select id="dashboardDatasource" required><option value="">请选择数据源</option>';
+            
+            state.data.dataSources.filter(ds => ds.status === 1).forEach(ds => {
+                html += '<option value="' + ds.id + '">' + ds.name + '</option>';
+            });
+            
+            html += '</select></div>';
+            html += '<div class="form-group"><label>SQL语句 *</label>';
+            html += '<textarea id="dashboardSql" placeholder="SELECT * FROM table_name" required style="font-family: monospace;"></textarea></div>';
+            html += '<div class="form-group"><label>图表类型 *</label>';
+            html += '<select id="dashboardChartType" required><option value="">请选择图表类型</option>';
+            html += '<option value="table">表格</option><option value="line">折线图</option>';
+            html += '<option value="bar">柱状图</option><option value="pie">饼图</option></select></div>';
+            html += '<div class="form-group"><label><input type="checkbox" id="dashboardPublic"> 是否公开</label></div>';
+            html += '<button type="submit" class="btn btn-primary">保存报表</button></form></div>';
+            return html;
+        }
+
+        function renderDashboardView() {
+            const dashboards = state.data.dashboards.filter(d => d.status === 'published');
+            let html = '<div><h3>报表查看</h3><div class="form-group"><label>选择报表</label>';
+            html += '<select id="viewDashboardSelect" onchange="loadDashboardView()">';
+            html += '<option value="">请选择报表</option>';
+            
+            dashboards.forEach(d => {
+                html += '<option value="' + d.id + '">' + d.name + '</option>';
+            });
+            
+            html += '</select></div><div id="dashboardViewContent"></div></div>';
+            return html;
+        }
+
+        function renderUserList() {
+            const list = state.data.users;
+            let html = '<div><div class="toolbar"><div class="search-box">';
+            html += '<input type="text" id="searchUser" placeholder="搜索用户名或姓名">';
+            html += '<button class="btn" onclick="searchUser()">搜索</button></div>';
+            html += '<button class="btn btn-primary" onclick="showUserModal()">新建用户</button></div>';
+            html += '<table><thead><tr><th>ID</th><th>用户名</th><th>真实姓名</th><th>邮箱</th><th>电话</th><th>状态</th><th>角色</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            
+            list.forEach(u => {
+                html += '<tr>';
+                html += '<td>' + u.id + '</td>';
+                html += '<td>' + u.username + '</td>';
+                html += '<td>' + u.realName + '</td>';
+                html += '<td>' + u.email + '</td>';
+                html += '<td>' + u.phone + '</td>';
+                html += '<td>' + getStatusBadge(u.status) + '</td>';
+                html += '<td>' + u.roleNames.join(', ') + '</td>';
+                html += '<td>' + formatDate(u.createdAt) + '</td>';
+                html += '<td>';
+                html += '<button class="btn" onclick="editUser(' + u.id + ')">编辑</button> ';
+                html += '<button class="btn btn-danger" onclick="deleteUser(' + u.id + ')">删除</button>';
+                html += '</td></tr>';
+            });
+            
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderRoleList() {
+            const list = state.data.roles;
+            let html = '<div><h3>角色管理</h3><table><thead><tr>';
+            html += '<th>ID</th><th>角色名称</th><th>角色编码</th><th>描述</th><th>创建时间</th>';
+            html += '</tr></thead><tbody>';
+            
+            list.forEach(r => {
+                html += '<tr>';
+                html += '<td>' + r.id + '</td>';
+                html += '<td>' + r.roleName + '</td>';
+                html += '<td>' + r.roleCode + '</td>';
+                html += '<td>' + r.description + '</td>';
+                html += '<td>' + formatDate(r.createdAt) + '</td>';
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderPermissionList() {
+            const list = state.data.permissions;
+            let html = '<div><div class="toolbar">';
+            html += '<button class="btn btn-primary" onclick="showGrantUserPermissionModal()">授予用户权限</button> ';
+            html += '<button class="btn btn-primary" onclick="showGrantRolePermissionModal()">授予角色权限</button>';
+            html += '</div><table><thead><tr>';
+            html += '<th>ID</th><th>报表名称</th><th>目标类型</th><th>目标名称</th><th>权限级别</th><th>创建时间</th><th>操作</th>';
+            html += '</tr></thead><tbody>';
+            
+            list.forEach(p => {
+                html += '<tr>';
+                html += '<td>' + p.id + '</td>';
+                html += '<td>' + p.dashboardName + '</td>';
+                html += '<td>' + (p.targetType === 'user' ? '用户' : '角色') + '</td>';
+                html += '<td>' + p.targetName + '</td>';
+                html += '<td>' + getPermissionLevelText(p.permissionLevel) + '</td>';
+                html += '<td>' + formatDate(p.createdAt) + '</td>';
+                html += '<td><button class="btn btn-danger" onclick="revokePermission(' + p.id + ')">撤销</button></td>';
+                html += '</tr>';
+            });
+            
+            html += '</tbody></table></div>';
+            return html;
+        }
+        // Event Handlers
+        function attachEventListeners() {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', handleLogin);
+            }
+            const designerForm = document.getElementById('designerForm');
+            if (designerForm) {
+                designerForm.addEventListener('submit', handleDesignerSubmit);
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const user = state.data.users.find(u => u.username === username && u.password === password);
+            if (user) {
+                state.currentUser = user;
+                showMessage('登录成功！', 'success');
+                renderApp();
+            } else {
+                showMessage('用户名或密码错误！', 'error');
+            }
+        }
+
+        function logout() {
+            state.currentUser = null;
+            state.currentTab = 'datasource';
+            showMessage('已退出登录', 'info');
+            renderApp();
+        }
+
+        function switchTab(tab) {
+            state.currentTab = tab;
+            updateTabContent();
+        }
+
+        function updateTabContent() {
+            const content = document.getElementById('tabContent');
+            if (!content) return;
+            switch (state.currentTab) {
+                case 'datasource': content.innerHTML = renderDataSourceList(); break;
+                case 'dashboard': content.innerHTML = renderDashboardList(); break;
+                case 'designer': content.innerHTML = renderDesigner(); attachEventListeners(); break;
+                case 'view': content.innerHTML = renderDashboardView(); break;
+                case 'user': content.innerHTML = renderUserList(); break;
+                case 'role': content.innerHTML = renderRoleList(); break;
+                case 'permission': content.innerHTML = renderPermissionList(); break;
+            }
+        }
+
+        function showDataSourceModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.innerHTML = '<div class="modal-content"><div class="modal-header"><h3>新建数据源</h3><button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button></div><form id="dataSourceForm"><div class="form-group"><label>名称 *</label><input type="text" id="dsName" required></div><div class="form-group"><label>类型 *</label><select id="dsType" required><option value="mysql">MySQL</option><option value="postgresql">PostgreSQL</option><option value="oracle">Oracle</option><option value="sqlserver">SQL Server</option><option value="clickhouse">ClickHouse</option></select></div><div class="form-group"><label>主机 *</label><input type="text" id="dsHost" required></div><div class="form-group"><label>端口 *</label><input type="number" id="dsPort" required></div><div class="form-group"><label>数据库 *</label><input type="text" id="dsDatabase" required></div><div class="form-group"><label>用户名 *</label><input type="text" id="dsUsername" required></div><div class="form-group"><label>密码 *</label><input type="password" id="dsPassword" required></div><div class="form-actions"><button type="button" class="btn" onclick="this.closest(\'.modal\').remove()">取消</button><button type="submit" class="btn btn-primary">保存</button></div></form></div>';
+            document.body.appendChild(modal);
+            document.getElementById('dataSourceForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const newDs = {
+                    id: Math.max(...state.data.dataSources.map(d => d.id)) + 1,
+                    name: document.getElementById('dsName').value,
+                    type: document.getElementById('dsType').value,
+                    host: document.getElementById('dsHost').value,
+                    port: parseInt(document.getElementById('dsPort').value),
+                    database: document.getElementById('dsDatabase').value,
+                    username: document.getElementById('dsUsername').value,
+                    password: '******',
+                    status: 1,
+                    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                };
+                state.data.dataSources.push(newDs);
+                modal.remove();
+                updateTabContent();
+                showMessage('数据源创建成功！', 'success');
+            });
+        }
+
+        function testConnection(id) {
+            showMessage('正在测试连接...', 'info');
+            setTimeout(() => {
+                if (Math.random() > 0.2) {
+                    showMessage('连接测试成功！', 'success');
+                } else {
+                    showMessage('连接测试失败！', 'error');
+                }
+            }, 1000);
+        }
+
+        function editDataSource(id) {
+            showMessage('编辑功能演示', 'info');
+        }
+
+        function deleteDataSource(id) {
+            if (confirm('确定要删除这个数据源吗？')) {
+                state.data.dataSources = state.data.dataSources.filter(ds => ds.id !== id);
+                updateTabContent();
+                showMessage('删除成功！', 'success');
+            }
+        }
+
+        function searchDataSource() {
+            showMessage('搜索功能演示', 'info');
+        }
+
+        function viewDashboard(id) {
+            const dashboard = state.data.dashboards.find(d => d.id === id);
+            if (!dashboard) return;
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            let html = '<div class="modal-content"><div class="modal-header"><h3>报表详情</h3><button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button></div><div class="detail-card"><h4>基本信息</h4>';
+            html += '<div class="detail-row"><div class="detail-label">报表名称：</div><div class="detail-value">' + dashboard.name + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">描述：</div><div class="detail-value">' + dashboard.description + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">分类：</div><div class="detail-value">' + dashboard.category + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">状态：</div><div class="detail-value">' + getStatusBadge(dashboard.status) + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">数据源：</div><div class="detail-value">' + dashboard.datasourceName + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">图表类型：</div><div class="detail-value">' + dashboard.chartType + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">创建人：</div><div class="detail-value">' + dashboard.createdBy + '</div></div>';
+            html += '<div class="detail-row"><div class="detail-label">创建时间：</div><div class="detail-value">' + dashboard.createdAt + '</div></div>';
+            html += '</div><div class="form-actions"><button class="btn" onclick="this.closest(\'.modal\').remove()">关闭</button></div></div>';
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
+        }
+
+        function publishDashboard(id) {
+            const dashboard = state.data.dashboards.find(d => d.id === id);
+            if (dashboard) {
+                dashboard.status = 'published';
+                updateTabContent();
+                showMessage('报表发布成功！', 'success');
+            }
+        }
+
+        function offlineDashboard(id) {
+            const dashboard = state.data.dashboards.find(d => d.id === id);
+            if (dashboard) {
+                dashboard.status = 'offline';
+                updateTabContent();
+                showMessage('报表已下线！', 'success');
+            }
+        }
+
+        function deleteDashboard(id) {
+            if (confirm('确定要删除这个报表吗？')) {
+                state.data.dashboards = state.data.dashboards.filter(d => d.id !== id);
+                updateTabContent();
+                showMessage('删除成功！', 'success');
+            }
+        }
+
+        function searchDashboard() {
+            showMessage('搜索功能演示', 'info');
+        }
+
+        function handleDesignerSubmit(e) {
+            e.preventDefault();
+            const dsId = parseInt(document.getElementById('dashboardDatasource').value);
+            const newDashboard = {
+                id: Math.max(...state.data.dashboards.map(d => d.id)) + 1,
+                name: document.getElementById('dashboardName').value,
+                description: document.getElementById('dashboardDesc').value,
+                category: document.getElementById('dashboardCategory').value,
+                status: 'draft',
+                isPublic: document.getElementById('dashboardPublic').checked,
+                datasourceId: dsId,
+                datasourceName: state.data.dataSources.find(ds => ds.id === dsId).name,
+                chartType: document.getElementById('dashboardChartType').value,
+                createdBy: state.currentUser.username,
+                createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+            };
+            state.data.dashboards.push(newDashboard);
+            showMessage('报表创建成功！', 'success');
+            e.target.reset();
+        }
+        function loadDashboardView() {
+            const select = document.getElementById('viewDashboardSelect');
+            const dashboardId = parseInt(select.value);
+            if (!dashboardId) return;
+            
+            const dashboard = state.data.dashboards.find(d => d.id === dashboardId);
+            const result = mockData.queryResults[dashboardId];
+            if (!dashboard || !result) return;
+            
+            const content = document.getElementById('dashboardViewContent');
+            let html = '<div class="loading">正在加载数据...</div>';
+            content.innerHTML = html;
+            
+            setTimeout(() => {
+                html = '<h4>' + dashboard.name + '</h4>';
+                html += '<div class="chart-container" id="chart"></div>';
+                html += '<table><thead><tr>';
+                result.columns.forEach(col => {
+                    html += '<th>' + col + '</th>';
+                });
+                html += '</tr></thead><tbody>';
+                result.data.forEach(row => {
+                    html += '<tr>';
+                    result.columns.forEach(col => {
+                        html += '<td>' + row[col] + '</td>';
+                    });
+                    html += '</tr>';
+                });
+                html += '</tbody></table>';
+                content.innerHTML = html;
+                
+                renderChart(dashboard.chartType, result);
+            }, 500);
+        }
+
+        function renderChart(chartType, result) {
+            const chartDom = document.getElementById('chart');
+            if (!chartDom) return;
+            
+            const myChart = echarts.init(chartDom);
+            let option = {};
+            
+            if (chartType === 'line') {
+                option = {
+                    title: { text: '销售趋势图' },
+                    tooltip: { trigger: 'axis' },
+                    xAxis: { type: 'category', data: result.data.map(d => d.date) },
+                    yAxis: { type: 'value' },
+                    series: [{
+                        name: '销售额',
+                        type: 'line',
+                        data: result.data.map(d => d.sales_amount),
+                        smooth: true
+                    }]
+                };
+            } else if (chartType === 'pie') {
+                option = {
+                    title: { text: '用户类型分布' },
+                    tooltip: { trigger: 'item' },
+                    series: [{
+                        type: 'pie',
+                        radius: '50%',
+                        data: result.data.map(d => ({ name: d.user_type, value: d.count }))
+                    }]
+                };
+            } else if (chartType === 'bar') {
+                option = {
+                    title: { text: '订单状态统计' },
+                    tooltip: { trigger: 'axis' },
+                    xAxis: { type: 'category', data: result.data.map(d => d.status) },
+                    yAxis: { type: 'value' },
+                    series: [{
+                        name: '订单数',
+                        type: 'bar',
+                        data: result.data.map(d => d.count)
+                    }]
+                };
+            }
+            
+            myChart.setOption(option);
+        }
+
+        function showUserModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.innerHTML = '<div class="modal-content"><div class="modal-header"><h3>新建用户</h3><button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button></div><form id="userForm"><div class="form-group"><label>用户名 *</label><input type="text" id="userName" required></div><div class="form-group"><label>真实姓名 *</label><input type="text" id="userRealName" required></div><div class="form-group"><label>邮箱 *</label><input type="email" id="userEmail" required></div><div class="form-group"><label>电话 *</label><input type="tel" id="userPhone" required></div><div class="form-group"><label>密码 *</label><input type="password" id="userPassword" required></div><div class="form-group"><label>角色 *</label><select id="userRole" required><option value="">请选择角色</option><option value="1">管理员</option><option value="2">分析师</option><option value="3">查看者</option></select></div><div class="form-actions"><button type="button" class="btn" onclick="this.closest(\'.modal\').remove()">取消</button><button type="submit" class="btn btn-primary">保存</button></div></form></div>';
+            document.body.appendChild(modal);
+            document.getElementById('userForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const roleId = parseInt(document.getElementById('userRole').value);
+                const role = state.data.roles.find(r => r.id === roleId);
+                const newUser = {
+                    id: Math.max(...state.data.users.map(u => u.id)) + 1,
+                    username: document.getElementById('userName').value,
+                    password: document.getElementById('userPassword').value,
+                    realName: document.getElementById('userRealName').value,
+                    email: document.getElementById('userEmail').value,
+                    phone: document.getElementById('userPhone').value,
+                    status: 1,
+                    roleIds: [roleId],
+                    roleNames: [role.roleName],
+                    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                };
+                state.data.users.push(newUser);
+                modal.remove();
+                updateTabContent();
+                showMessage('用户创建成功！', 'success');
+            });
+        }
+
+        function editUser(id) {
+            showMessage('编辑功能演示', 'info');
+        }
+
+        function deleteUser(id) {
+            if (confirm('确定要删除这个用户吗？')) {
+                state.data.users = state.data.users.filter(u => u.id !== id);
+                updateTabContent();
+                showMessage('删除成功！', 'success');
+            }
+        }
+
+        function searchUser() {
+            showMessage('搜索功能演示', 'info');
+        }
+
+        function showGrantUserPermissionModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            let html = '<div class="modal-content"><div class="modal-header"><h3>授予用户权限</h3><button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button></div><form id="grantUserForm"><div class="form-group"><label>报表 *</label><select id="permDashboard" required><option value="">请选择报表</option>';
+            state.data.dashboards.forEach(d => {
+                html += '<option value="' + d.id + '">' + d.name + '</option>';
+            });
+            html += '</select></div><div class="form-group"><label>用户 *</label><select id="permUser" required><option value="">请选择用户</option>';
+            state.data.users.forEach(u => {
+                html += '<option value="' + u.id + '">' + u.realName + '</option>';
+            });
+            html += '</select></div><div class="form-group"><label>权限级别 *</label><select id="permLevel" required><option value="view">查看</option><option value="edit">编辑</option><option value="manage">管理</option></select></div><div class="form-actions"><button type="button" class="btn" onclick="this.closest(\'.modal\').remove()">取消</button><button type="submit" class="btn btn-primary">保存</button></div></form></div>';
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
+            document.getElementById('grantUserForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const dashboardId = parseInt(document.getElementById('permDashboard').value);
+                const userId = parseInt(document.getElementById('permUser').value);
+                const dashboard = state.data.dashboards.find(d => d.id === dashboardId);
+                const user = state.data.users.find(u => u.id === userId);
+                const newPerm = {
+                    id: Math.max(...state.data.permissions.map(p => p.id)) + 1,
+                    dashboardId: dashboardId,
+                    dashboardName: dashboard.name,
+                    targetType: 'user',
+                    targetId: userId,
+                    targetName: user.username,
+                    permissionLevel: document.getElementById('permLevel').value,
+                    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                };
+                state.data.permissions.push(newPerm);
+                modal.remove();
+                updateTabContent();
+                showMessage('权限授予成功！', 'success');
+            });
+        }
+
+        function showGrantRolePermissionModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            let html = '<div class="modal-content"><div class="modal-header"><h3>授予角色权限</h3><button class="modal-close" onclick="this.closest(\'.modal\').remove()">×</button></div><form id="grantRoleForm"><div class="form-group"><label>报表 *</label><select id="permDashboard2" required><option value="">请选择报表</option>';
+            state.data.dashboards.forEach(d => {
+                html += '<option value="' + d.id + '">' + d.name + '</option>';
+            });
+            html += '</select></div><div class="form-group"><label>角色 *</label><select id="permRole" required><option value="">请选择角色</option>';
+            state.data.roles.forEach(r => {
+                html += '<option value="' + r.id + '">' + r.roleName + '</option>';
+            });
+            html += '</select></div><div class="form-group"><label>权限级别 *</label><select id="permLevel2" required><option value="view">查看</option><option value="edit">编辑</option><option value="manage">管理</option></select></div><div class="form-actions"><button type="button" class="btn" onclick="this.closest(\'.modal\').remove()">取消</button><button type="submit" class="btn btn-primary">保存</button></div></form></div>';
+            modal.innerHTML = html;
+            document.body.appendChild(modal);
+            document.getElementById('grantRoleForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const dashboardId = parseInt(document.getElementById('permDashboard2').value);
+                const roleId = parseInt(document.getElementById('permRole').value);
+                const dashboard = state.data.dashboards.find(d => d.id === dashboardId);
+                const role = state.data.roles.find(r => r.id === roleId);
+                const newPerm = {
+                    id: Math.max(...state.data.permissions.map(p => p.id)) + 1,
+                    dashboardId: dashboardId,
+                    dashboardName: dashboard.name,
+                    targetType: 'role',
+                    targetId: roleId,
+                    targetName: role.roleName,
+                    permissionLevel: document.getElementById('permLevel2').value,
+                    createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+                };
+                state.data.permissions.push(newPerm);
+                modal.remove();
+                updateTabContent();
+                showMessage('权限授予成功！', 'success');
+            });
+        }
+
+        function revokePermission(id) {
+            if (confirm('确定要撤销这个权限吗？')) {
+                state.data.permissions = state.data.permissions.filter(p => p.id !== id);
+                updateTabContent();
+                showMessage('权限撤销成功！', 'success');
+            }
+        }
+
+        // Initialize
+        renderApp();
+    </script>
+</body>
+</html>
