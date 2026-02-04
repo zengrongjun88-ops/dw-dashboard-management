@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DW Dashboard Management - 功能验证页面</title>
     
-    <!-- Ant Design CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd@5.12.0/dist/reset.css">
-    
     <style>
         * {
             margin: 0;
@@ -57,32 +54,36 @@
             padding: 20px;
         }
         
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: calc(100vh - 200px);
-        }
-        
-        .login-box {
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            width: 400px;
-        }
-        
-        .login-box h2 {
-            text-align: center;
-            color: #1890ff;
-            margin-bottom: 30px;
-        }
-        
         .main-content {
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             padding: 20px;
+        }
+        
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f0f2f5;
+            border-radius: 4px;
+        }
+        
+        .user-info h2 {
+            color: #262626;
+            font-size: 18px;
+        }
+        
+        .user-info .user-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #1890ff;
+            color: white;
+            border-radius: 12px;
+            font-size: 14px;
+            margin-left: 12px;
         }
         
         .tabs {
@@ -192,6 +193,17 @@
         .btn-success:hover {
             background: #73d13d;
             border-color: #73d13d;
+        }
+        
+        .btn-warning {
+            background: #faad14;
+            color: white;
+            border-color: #faad14;
+        }
+        
+        .btn-warning:hover {
+            background: #ffc53d;
+            border-color: #ffc53d;
         }
         
         table {
@@ -392,36 +404,6 @@
             border: 1px solid #91d5ff;
         }
         
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin-top: 20px;
-        }
-        
-        .pagination button {
-            padding: 6px 12px;
-            border: 1px solid #d9d9d9;
-            background: white;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .pagination button:hover:not(:disabled) {
-            border-color: #1890ff;
-            color: #1890ff;
-        }
-        
-        .pagination button:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-        
-        .pagination span {
-            color: #595959;
-        }
-        
         .detail-card {
             background: #fafafa;
             padding: 16px;
@@ -448,74 +430,52 @@
             flex: 1;
             color: #262626;
         }
-        
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 44px;
-            height: 22px;
-        }
-        
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 22px;
-        }
-        
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 2px;
-            bottom: 2px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .slider {
-            background-color: #1890ff;
-        }
-        
-        input:checked + .slider:before {
-            transform: translateX(22px);
-        }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>🎯 DW Dashboard Management - 功能验证页面</h1>
         <div class="info">
-            <h3>📝 测试账号</h3>
-            <p><strong>管理员：</strong> admin / 123456</p>
-            <p><strong>分析师：</strong> analyst / 123456</p>
-            <p><strong>查看者：</strong> viewer / 123456</p>
-            <p style="margin-top: 8px; color: #ff4d4f;"><strong>💡 提示：</strong>本页面使用Mock数据，所有操作仅在浏览器内存中生效，刷新页面后数据会重置。</p>
+            <h3>💡 使用说明</h3>
+            <p><strong>验收模式：</strong>直接进入系统，无需登录，所有功能立即可用</p>
+            <p><strong>当前用户：</strong>系统管理员 (admin) - 拥有所有权限</p>
+            <p><strong>数据说明：</strong>本页面使用Mock数据，所有操作仅在浏览器内存中生效，刷新页面后数据会重置</p>
+            <p style="margin-top: 8px; color: #ff4d4f;"><strong>💡 提示：</strong>点击各个Tab标签页即可验收不同功能模块</p>
         </div>
     </div>
 
-    <div id="app"></div>
+    <div class="container">
+        <div class="main-content">
+            <div class="user-info">
+                <div>
+                    <h2>
+                        欢迎使用功能验证系统
+                        <span class="user-badge">管理员模式</span>
+                    </h2>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('datasource')">数据源管理</button>
+                <button class="tab" onclick="switchTab('dashboard')">报表管理</button>
+                <button class="tab" onclick="switchTab('designer')">报表设计器</button>
+                <button class="tab" onclick="switchTab('view')">报表查看</button>
+                <button class="tab" onclick="switchTab('user')">用户管理</button>
+                <button class="tab" onclick="switchTab('role')">角色管理</button>
+                <button class="tab" onclick="switchTab('permission')">权限管理</button>
+                <button class="tab" onclick="switchTab('login')">登录演示</button>
+            </div>
+            
+            <div id="tabContent"></div>
+        </div>
+    </div>
     
     <div id="message" class="message"></div>
 
-    <!-- ECharts -->
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     
     <script>
-        // ==================== Mock数据 ====================
+        // Mock Data
         const mockData = {
             users: [
                 { id: 1, username: 'admin', password: '123456', realName: '系统管理员', email: 'admin@example.com', phone: '13800138000', status: 1, roleIds: [1], roleNames: ['管理员'], createdAt: '2026-01-01 10:00:00' },
@@ -576,11 +536,17 @@
             }
         };
 
-        // ==================== 工具函数 ====================
+        // State
+        const state = {
+            currentTab: 'datasource',
+            data: JSON.parse(JSON.stringify(mockData))
+        };
+
+        // Utility Functions
         function showMessage(text, type = 'success') {
             const msg = document.getElementById('message');
             msg.textContent = text;
-            msg.className = `message message-${type} active`;
+            msg.className = 'message message-' + type + ' active';
             setTimeout(() => {
                 msg.className = 'message';
             }, 3000);
@@ -600,7 +566,7 @@
                 '0': { text: '禁用', class: 'badge-danger' }
             };
             const info = statusMap[status] || { text: status, class: 'badge-info' };
-            return `<span class="badge ${info.class}">${info.text}</span>`;
+            return '<span class="badge ' + info.class + '">' + info.text + '</span>';
         }
 
         function getPermissionLevelText(level) {
@@ -619,288 +585,17 @@
             return map[type] || type;
         }
 
-        // ==================== 应用状态 ====================
-        const state = {
-            currentUser: null,
-            currentTab: 'datasource',
-            data: JSON.parse(JSON.stringify(mockData)) // 深拷贝
-        };
-
-        // ==================== 渲染函数 ====================
-        function renderApp() {
-            const app = document.getElementById('app');
-            
-            if (!state.currentUser) {
-                app.innerHTML = renderLogin();
-            } else {
-                app.innerHTML = renderMain();
-                attachEventListeners();
-            }
-        }
-
-        function renderLogin() {
-            return `
-                <div class="login-container">
-                    <div class="login-box">
-                        <h2>🔐 用户登录</h2>
-                        <form id="loginForm">
-                            <div class="form-group">
-                                <label>用户名</label>
-                                <input type="text" id="username" placeholder="请输入用户名" required>
-                            </div>
-                            <div class="form-group">
-                                <label>密码</label>
-                                <input type="password" id="password" placeholder="请输入密码" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">登录</button>
-                        </form>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderMain() {
-            return `
-                <div class="container">
-                    <div class="main-content">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h2>欢迎，${state.currentUser.realName}</h2>
-                            <button class="btn btn-danger" onclick="logout()">退出登录</button>
-                        </div>
-                        
-                        <div class="tabs">
-                            <button class="tab ${state.currentTab === 'datasource' ? 'active' : ''}" onclick="switchTab('datasource')">数据源管理</button>
-                            <button class="tab ${state.currentTab === 'dashboard' ? 'active' : ''}" onclick="switchTab('dashboard')">报表管理</button>
-                            <button class="tab ${state.currentTab === 'designer' ? 'active' : ''}" onclick="switchTab('designer')">报表设计器</button>
-                            <button class="tab ${state.currentTab === 'view' ? 'active' : ''}" onclick="switchTab('view')">报表查看</button>
-                            <button class="tab ${state.currentTab === 'user' ? 'active' : ''}" onclick="switchTab('user')">用户管理</button>
-                            <button class="tab ${state.currentTab === 'role' ? 'active' : ''}" onclick="switchTab('role')">角色管理</button>
-                            <button class="tab ${state.currentTab === 'permission' ? 'active' : ''}" onclick="switchTab('permission')">权限管理</button>
-                        </div>
-                        
-                        <div id="tabContent"></div>
-                    </div>
-                </div>
-            `;
-        }
-        function renderDataSourceList() {
-            const list = state.data.dataSources;
-            let html = '<div><div class="toolbar"><div class="search-box">';
-            html += '<input type="text" id="searchDataSource" placeholder="搜索数据源名称">';
-            html += '<button class="btn" onclick="searchDataSource()">搜索</button></div>';
-            html += '<button class="btn btn-primary" onclick="showDataSourceModal()">新建数据源</button></div>';
-            html += '<table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>主机</th><th>端口</th><th>数据库</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
-            
-            list.forEach(ds => {
-                html += '<tr>';
-                html += '<td>' + ds.id + '</td>';
-                html += '<td>' + ds.name + '</td>';
-                html += '<td>' + getDataSourceTypeText(ds.type) + '</td>';
-                html += '<td>' + ds.host + '</td>';
-                html += '<td>' + ds.port + '</td>';
-                html += '<td>' + ds.database + '</td>';
-                html += '<td>' + getStatusBadge(ds.status) + '</td>';
-                html += '<td>' + formatDate(ds.createdAt) + '</td>';
-                html += '<td>';
-                html += '<button class="btn" onclick="testConnection(' + ds.id + ')">测试连接</button> ';
-                html += '<button class="btn" onclick="editDataSource(' + ds.id + ')">编辑</button> ';
-                html += '<button class="btn btn-danger" onclick="deleteDataSource(' + ds.id + ')">删除</button>';
-                html += '</td></tr>';
-            });
-            
-            html += '</tbody></table></div>';
-            return html;
-        }
-
-        function renderDashboardList() {
-            const list = state.data.dashboards;
-            let html = '<div><div class="toolbar"><div class="search-box">';
-            html += '<input type="text" id="searchDashboard" placeholder="搜索报表名称">';
-            html += '<select id="statusFilter" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;">';
-            html += '<option value="">全部状态</option><option value="draft">草稿</option>';
-            html += '<option value="published">已发布</option><option value="offline">已下线</option></select>';
-            html += '<button class="btn" onclick="searchDashboard()">搜索</button></div></div>';
-            html += '<table><thead><tr><th>ID</th><th>报表名称</th><th>描述</th><th>分类</th><th>状态</th><th>创建人</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
-            
-            list.forEach(d => {
-                html += '<tr>';
-                html += '<td>' + d.id + '</td>';
-                html += '<td>' + d.name + '</td>';
-                html += '<td>' + d.description + '</td>';
-                html += '<td>' + d.category + '</td>';
-                html += '<td>' + getStatusBadge(d.status) + '</td>';
-                html += '<td>' + d.createdBy + '</td>';
-                html += '<td>' + formatDate(d.createdAt) + '</td>';
-                html += '<td>';
-                html += '<button class="btn" onclick="viewDashboard(' + d.id + ')">查看</button> ';
-                if (d.status === 'draft') {
-                    html += '<button class="btn btn-success" onclick="publishDashboard(' + d.id + ')">发布</button> ';
-                }
-                if (d.status === 'published') {
-                    html += '<button class="btn btn-warning" onclick="offlineDashboard(' + d.id + ')">下线</button> ';
-                }
-                html += '<button class="btn btn-danger" onclick="deleteDashboard(' + d.id + ')">删除</button>';
-                html += '</td></tr>';
-            });
-            
-            html += '</tbody></table></div>';
-            return html;
-        }
-
-        function renderDesigner() {
-            let html = '<div><h3>报表设计器</h3><form id="designerForm">';
-            html += '<div class="form-group"><label>报表名称 *</label>';
-            html += '<input type="text" id="dashboardName" placeholder="请输入报表名称" required></div>';
-            html += '<div class="form-group"><label>描述</label>';
-            html += '<textarea id="dashboardDesc" placeholder="请输入报表描述"></textarea></div>';
-            html += '<div class="form-group"><label>分类 *</label>';
-            html += '<input type="text" id="dashboardCategory" placeholder="请输入分类" required></div>';
-            html += '<div class="form-group"><label>数据源 *</label>';
-            html += '<select id="dashboardDatasource" required><option value="">请选择数据源</option>';
-            
-            state.data.dataSources.filter(ds => ds.status === 1).forEach(ds => {
-                html += '<option value="' + ds.id + '">' + ds.name + '</option>';
-            });
-            
-            html += '</select></div>';
-            html += '<div class="form-group"><label>SQL语句 *</label>';
-            html += '<textarea id="dashboardSql" placeholder="SELECT * FROM table_name" required style="font-family: monospace;"></textarea></div>';
-            html += '<div class="form-group"><label>图表类型 *</label>';
-            html += '<select id="dashboardChartType" required><option value="">请选择图表类型</option>';
-            html += '<option value="table">表格</option><option value="line">折线图</option>';
-            html += '<option value="bar">柱状图</option><option value="pie">饼图</option></select></div>';
-            html += '<div class="form-group"><label><input type="checkbox" id="dashboardPublic"> 是否公开</label></div>';
-            html += '<button type="submit" class="btn btn-primary">保存报表</button></form></div>';
-            return html;
-        }
-
-        function renderDashboardView() {
-            const dashboards = state.data.dashboards.filter(d => d.status === 'published');
-            let html = '<div><h3>报表查看</h3><div class="form-group"><label>选择报表</label>';
-            html += '<select id="viewDashboardSelect" onchange="loadDashboardView()">';
-            html += '<option value="">请选择报表</option>';
-            
-            dashboards.forEach(d => {
-                html += '<option value="' + d.id + '">' + d.name + '</option>';
-            });
-            
-            html += '</select></div><div id="dashboardViewContent"></div></div>';
-            return html;
-        }
-
-        function renderUserList() {
-            const list = state.data.users;
-            let html = '<div><div class="toolbar"><div class="search-box">';
-            html += '<input type="text" id="searchUser" placeholder="搜索用户名或姓名">';
-            html += '<button class="btn" onclick="searchUser()">搜索</button></div>';
-            html += '<button class="btn btn-primary" onclick="showUserModal()">新建用户</button></div>';
-            html += '<table><thead><tr><th>ID</th><th>用户名</th><th>真实姓名</th><th>邮箱</th><th>电话</th><th>状态</th><th>角色</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
-            
-            list.forEach(u => {
-                html += '<tr>';
-                html += '<td>' + u.id + '</td>';
-                html += '<td>' + u.username + '</td>';
-                html += '<td>' + u.realName + '</td>';
-                html += '<td>' + u.email + '</td>';
-                html += '<td>' + u.phone + '</td>';
-                html += '<td>' + getStatusBadge(u.status) + '</td>';
-                html += '<td>' + u.roleNames.join(', ') + '</td>';
-                html += '<td>' + formatDate(u.createdAt) + '</td>';
-                html += '<td>';
-                html += '<button class="btn" onclick="editUser(' + u.id + ')">编辑</button> ';
-                html += '<button class="btn btn-danger" onclick="deleteUser(' + u.id + ')">删除</button>';
-                html += '</td></tr>';
-            });
-            
-            html += '</tbody></table></div>';
-            return html;
-        }
-
-        function renderRoleList() {
-            const list = state.data.roles;
-            let html = '<div><h3>角色管理</h3><table><thead><tr>';
-            html += '<th>ID</th><th>角色名称</th><th>角色编码</th><th>描述</th><th>创建时间</th>';
-            html += '</tr></thead><tbody>';
-            
-            list.forEach(r => {
-                html += '<tr>';
-                html += '<td>' + r.id + '</td>';
-                html += '<td>' + r.roleName + '</td>';
-                html += '<td>' + r.roleCode + '</td>';
-                html += '<td>' + r.description + '</td>';
-                html += '<td>' + formatDate(r.createdAt) + '</td>';
-                html += '</tr>';
-            });
-            
-            html += '</tbody></table></div>';
-            return html;
-        }
-
-        function renderPermissionList() {
-            const list = state.data.permissions;
-            let html = '<div><div class="toolbar">';
-            html += '<button class="btn btn-primary" onclick="showGrantUserPermissionModal()">授予用户权限</button> ';
-            html += '<button class="btn btn-primary" onclick="showGrantRolePermissionModal()">授予角色权限</button>';
-            html += '</div><table><thead><tr>';
-            html += '<th>ID</th><th>报表名称</th><th>目标类型</th><th>目标名称</th><th>权限级别</th><th>创建时间</th><th>操作</th>';
-            html += '</tr></thead><tbody>';
-            
-            list.forEach(p => {
-                html += '<tr>';
-                html += '<td>' + p.id + '</td>';
-                html += '<td>' + p.dashboardName + '</td>';
-                html += '<td>' + (p.targetType === 'user' ? '用户' : '角色') + '</td>';
-                html += '<td>' + p.targetName + '</td>';
-                html += '<td>' + getPermissionLevelText(p.permissionLevel) + '</td>';
-                html += '<td>' + formatDate(p.createdAt) + '</td>';
-                html += '<td><button class="btn btn-danger" onclick="revokePermission(' + p.id + ')">撤销</button></td>';
-                html += '</tr>';
-            });
-            
-            html += '</tbody></table></div>';
-            return html;
-        }
-        // Event Handlers
-        function attachEventListeners() {
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', handleLogin);
-            }
-            const designerForm = document.getElementById('designerForm');
-            if (designerForm) {
-                designerForm.addEventListener('submit', handleDesignerSubmit);
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const user = state.data.users.find(u => u.username === username && u.password === password);
-            if (user) {
-                state.currentUser = user;
-                showMessage('登录成功！', 'success');
-                renderApp();
-            } else {
-                showMessage('用户名或密码错误！', 'error');
-            }
-        }
-
-        function logout() {
-            state.currentUser = null;
-            state.currentTab = 'datasource';
-            showMessage('已退出登录', 'info');
-            renderApp();
-        }
-
         function switchTab(tab) {
             state.currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
             updateTabContent();
         }
 
         function updateTabContent() {
             const content = document.getElementById('tabContent');
             if (!content) return;
+            
             switch (state.currentTab) {
                 case 'datasource': content.innerHTML = renderDataSourceList(); break;
                 case 'dashboard': content.innerHTML = renderDashboardList(); break;
@@ -909,9 +604,119 @@
                 case 'user': content.innerHTML = renderUserList(); break;
                 case 'role': content.innerHTML = renderRoleList(); break;
                 case 'permission': content.innerHTML = renderPermissionList(); break;
+                case 'login': content.innerHTML = renderLoginDemo(); attachEventListeners(); break;
+            }
+        }
+        // Render Functions (复用之前的代码)
+        function renderDataSourceList() {
+            const list = state.data.dataSources;
+            let html = '<div><div class="toolbar"><div class="search-box">';
+            html += '<input type="text" id="searchDataSource" placeholder="搜索数据源名称">';
+            html += '<button class="btn" onclick="searchDataSource()">搜索</button></div>';
+            html += '<button class="btn btn-primary" onclick="showDataSourceModal()">新建数据源</button></div>';
+            html += '<table><thead><tr><th>ID</th><th>名称</th><th>类型</th><th>主机</th><th>端口</th><th>数据库</th><th>状态</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            list.forEach(ds => {
+                html += '<tr><td>' + ds.id + '</td><td>' + ds.name + '</td><td>' + getDataSourceTypeText(ds.type) + '</td><td>' + ds.host + '</td><td>' + ds.port + '</td><td>' + ds.database + '</td><td>' + getStatusBadge(ds.status) + '</td><td>' + formatDate(ds.createdAt) + '</td><td><button class="btn" onclick="testConnection(' + ds.id + ')">测试连接</button> <button class="btn" onclick="editDataSource(' + ds.id + ')">编辑</button> <button class="btn btn-danger" onclick="deleteDataSource(' + ds.id + ')">删除</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderDashboardList() {
+            const list = state.data.dashboards;
+            let html = '<div><div class="toolbar"><div class="search-box"><input type="text" id="searchDashboard" placeholder="搜索报表名称"><select id="statusFilter" style="padding: 8px; border: 1px solid #d9d9d9; border-radius: 4px;"><option value="">全部状态</option><option value="draft">草稿</option><option value="published">已发布</option><option value="offline">已下线</option></select><button class="btn" onclick="searchDashboard()">搜索</button></div></div><table><thead><tr><th>ID</th><th>报表名称</th><th>描述</th><th>分类</th><th>状态</th><th>创建人</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            list.forEach(d => {
+                html += '<tr><td>' + d.id + '</td><td>' + d.name + '</td><td>' + d.description + '</td><td>' + d.category + '</td><td>' + getStatusBadge(d.status) + '</td><td>' + d.createdBy + '</td><td>' + formatDate(d.createdAt) + '</td><td><button class="btn" onclick="viewDashboard(' + d.id + ')">查看</button> ';
+                if (d.status === 'draft') html += '<button class="btn btn-success" onclick="publishDashboard(' + d.id + ')">发布</button> ';
+                if (d.status === 'published') html += '<button class="btn btn-warning" onclick="offlineDashboard(' + d.id + ')">下线</button> ';
+                html += '<button class="btn btn-danger" onclick="deleteDashboard(' + d.id + ')">删除</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderDesigner() {
+            let html = '<div><h3>报表设计器</h3><form id="designerForm"><div class="form-group"><label>报表名称 *</label><input type="text" id="dashboardName" placeholder="请输入报表名称" required></div><div class="form-group"><label>描述</label><textarea id="dashboardDesc" placeholder="请输入报表描述"></textarea></div><div class="form-group"><label>分类 *</label><input type="text" id="dashboardCategory" placeholder="请输入分类" required></div><div class="form-group"><label>数据源 *</label><select id="dashboardDatasource" required><option value="">请选择数据源</option>';
+            state.data.dataSources.filter(ds => ds.status === 1).forEach(ds => {
+                html += '<option value="' + ds.id + '">' + ds.name + '</option>';
+            });
+            html += '</select></div><div class="form-group"><label>SQL语句 *</label><textarea id="dashboardSql" placeholder="SELECT * FROM table_name" required style="font-family: monospace;"></textarea></div><div class="form-group"><label>图表类型 *</label><select id="dashboardChartType" required><option value="">请选择图表类型</option><option value="table">表格</option><option value="line">折线图</option><option value="bar">柱状图</option><option value="pie">饼图</option></select></div><div class="form-group"><label><input type="checkbox" id="dashboardPublic"> 是否公开</label></div><button type="submit" class="btn btn-primary">保存报表</button></form></div>';
+            return html;
+        }
+
+        function renderDashboardView() {
+            const dashboards = state.data.dashboards.filter(d => d.status === 'published');
+            let html = '<div><h3>报表查看</h3><div class="form-group"><label>选择报表</label><select id="viewDashboardSelect" onchange="loadDashboardView()"><option value="">请选择报表</option>';
+            dashboards.forEach(d => {
+                html += '<option value="' + d.id + '">' + d.name + '</option>';
+            });
+            html += '</select></div><div id="dashboardViewContent"></div></div>';
+            return html;
+        }
+
+        function renderUserList() {
+            const list = state.data.users;
+            let html = '<div><div class="toolbar"><div class="search-box"><input type="text" id="searchUser" placeholder="搜索用户名或姓名"><button class="btn" onclick="searchUser()">搜索</button></div><button class="btn btn-primary" onclick="showUserModal()">新建用户</button></div><table><thead><tr><th>ID</th><th>用户名</th><th>真实姓名</th><th>邮箱</th><th>电话</th><th>状态</th><th>角色</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            list.forEach(u => {
+                html += '<tr><td>' + u.id + '</td><td>' + u.username + '</td><td>' + u.realName + '</td><td>' + u.email + '</td><td>' + u.phone + '</td><td>' + getStatusBadge(u.status) + '</td><td>' + u.roleNames.join(', ') + '</td><td>' + formatDate(u.createdAt) + '</td><td><button class="btn" onclick="editUser(' + u.id + ')">编辑</button> <button class="btn btn-danger" onclick="deleteUser(' + u.id + ')">删除</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderRoleList() {
+            const list = state.data.roles;
+            let html = '<div><h3>角色管理</h3><table><thead><tr><th>ID</th><th>角色名称</th><th>角色编码</th><th>描述</th><th>创建时间</th></tr></thead><tbody>';
+            list.forEach(r => {
+                html += '<tr><td>' + r.id + '</td><td>' + r.roleName + '</td><td>' + r.roleCode + '</td><td>' + r.description + '</td><td>' + formatDate(r.createdAt) + '</td></tr>';
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderPermissionList() {
+            const list = state.data.permissions;
+            let html = '<div><div class="toolbar"><button class="btn btn-primary" onclick="showGrantUserPermissionModal()">授予用户权限</button> <button class="btn btn-primary" onclick="showGrantRolePermissionModal()">授予角色权限</button></div><table><thead><tr><th>ID</th><th>报表名称</th><th>目标类型</th><th>目标名称</th><th>权限级别</th><th>创建时间</th><th>操作</th></tr></thead><tbody>';
+            list.forEach(p => {
+                html += '<tr><td>' + p.id + '</td><td>' + p.dashboardName + '</td><td>' + (p.targetType === 'user' ? '用户' : '角色') + '</td><td>' + p.targetName + '</td><td>' + getPermissionLevelText(p.permissionLevel) + '</td><td>' + formatDate(p.createdAt) + '</td><td><button class="btn btn-danger" onclick="revokePermission(' + p.id + ')">撤销</button></td></tr>';
+            });
+            html += '</tbody></table></div>';
+            return html;
+        }
+
+        function renderLoginDemo() {
+            return '<div style="max-width: 500px; margin: 40px auto;"><h3 style="text-align: center; margin-bottom: 20px;">登录功能演示</h3><div style="background: #f0f2f5; padding: 20px; border-radius: 8px; margin-bottom: 20px;"><p style="margin-bottom: 12px;"><strong>说明：</strong></p><p style="color: #595959; line-height: 1.6;">本验证页面已去掉登录流程，直接以管理员身份进入系统。此Tab仅用于展示登录界面的UI设计。</p><p style="color: #595959; line-height: 1.6; margin-top: 8px;">在实际系统中，用户需要先登录才能访问其他功能模块。</p></div><form id="loginDemoForm" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"><div class="form-group"><label>用户名</label><input type="text" value="admin" placeholder="请输入用户名" readonly></div><div class="form-group"><label>密码</label><input type="password" value="123456" placeholder="请输入密码" readonly></div><button type="button" class="btn btn-primary" style="width: 100%;" onclick="showMessage(\'这是登录UI演示，实际登录功能已集成在前端项目中\', \'info\')">登录（演示）</button></form><div style="margin-top: 20px; padding: 16px; background: #e6f7ff; border: 1px solid #91d5ff; border-radius: 4px;"><p style="color: #0050b3; margin-bottom: 8px;"><strong>测试账号：</strong></p><p style="color: #595959;">• 管理员: admin / 123456</p><p style="color: #595959;">• 分析师: analyst / 123456</p><p style="color: #595959;">• 查看者: viewer / 123456</p></div></div>';
+        }
+        // Event Handlers
+        function attachEventListeners() {
+            const designerForm = document.getElementById('designerForm');
+            if (designerForm) {
+                designerForm.addEventListener('submit', handleDesignerSubmit);
             }
         }
 
+        function handleDesignerSubmit(e) {
+            e.preventDefault();
+            const dsId = parseInt(document.getElementById('dashboardDatasource').value);
+            const newDashboard = {
+                id: Math.max(...state.data.dashboards.map(d => d.id)) + 1,
+                name: document.getElementById('dashboardName').value,
+                description: document.getElementById('dashboardDesc').value,
+                category: document.getElementById('dashboardCategory').value,
+                status: 'draft',
+                isPublic: document.getElementById('dashboardPublic').checked,
+                datasourceId: dsId,
+                datasourceName: state.data.dataSources.find(ds => ds.id === dsId).name,
+                chartType: document.getElementById('dashboardChartType').value,
+                createdBy: 'admin',
+                createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
+            };
+            state.data.dashboards.push(newDashboard);
+            showMessage('报表创建成功！', 'success');
+            e.target.reset();
+        }
+
+        // DataSource Operations
         function showDataSourceModal() {
             const modal = document.createElement('div');
             modal.className = 'modal active';
@@ -965,6 +770,7 @@
             showMessage('搜索功能演示', 'info');
         }
 
+        // Dashboard Operations
         function viewDashboard(id) {
             const dashboard = state.data.dashboards.find(d => d.id === id);
             if (!dashboard) return;
@@ -1014,26 +820,7 @@
             showMessage('搜索功能演示', 'info');
         }
 
-        function handleDesignerSubmit(e) {
-            e.preventDefault();
-            const dsId = parseInt(document.getElementById('dashboardDatasource').value);
-            const newDashboard = {
-                id: Math.max(...state.data.dashboards.map(d => d.id)) + 1,
-                name: document.getElementById('dashboardName').value,
-                description: document.getElementById('dashboardDesc').value,
-                category: document.getElementById('dashboardCategory').value,
-                status: 'draft',
-                isPublic: document.getElementById('dashboardPublic').checked,
-                datasourceId: dsId,
-                datasourceName: state.data.dataSources.find(ds => ds.id === dsId).name,
-                chartType: document.getElementById('dashboardChartType').value,
-                createdBy: state.currentUser.username,
-                createdAt: new Date().toISOString().slice(0, 19).replace('T', ' ')
-            };
-            state.data.dashboards.push(newDashboard);
-            showMessage('报表创建成功！', 'success');
-            e.target.reset();
-        }
+        // Dashboard View
         function loadDashboardView() {
             const select = document.getElementById('viewDashboardSelect');
             const dashboardId = parseInt(select.value);
@@ -1116,6 +903,7 @@
             myChart.setOption(option);
         }
 
+        // User Operations
         function showUserModal() {
             const modal = document.createElement('div');
             modal.className = 'modal active';
@@ -1160,6 +948,7 @@
             showMessage('搜索功能演示', 'info');
         }
 
+        // Permission Operations
         function showGrantUserPermissionModal() {
             const modal = document.createElement('div');
             modal.className = 'modal active';
@@ -1243,7 +1032,7 @@
         }
 
         // Initialize
-        renderApp();
+        updateTabContent();
     </script>
 </body>
 </html>
